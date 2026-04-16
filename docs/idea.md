@@ -1,4 +1,4 @@
-# Idea del proyecto: MyAnimeList Personal
+# Idea del proyecto: OtakuList
 
 ## ¿Qué problema resuelve?
 Muchos fans del anime y el manga no tienen un lugar sencillo donde
