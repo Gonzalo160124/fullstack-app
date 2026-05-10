@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { ListProvider } from "./context/ListContext";
 import { HomePage } from "./pages/HomePage";
 import { MyListPage } from "./pages/MyListPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/milista" element={<MyListPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </ListProvider>
     </BrowserRouter>
