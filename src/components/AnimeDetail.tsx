@@ -12,10 +12,28 @@ export function AnimeDetail({ anime, onCerrar }: AnimeDetailProps) {
   const [estado, setEstado] = useState<EstadoAnime>("PENDIENTE");
   const [puntuacion, setPuntuacion] = useState<number | null>(null);
   const [notas, setNotas] = useState("");
+  const [errores, setErrores] = useState<{ estado?: string; puntuacion?: string }>({});
+  const [confirmacion, setConfirmacion] = useState(false);
 
   const yaGuardado = lista.some(a => a.mal_id === anime.mal_id);
 
+  function validar(): boolean {
+    const nuevosErrores: { estado?: string; puntuacion?: string } = {};
+
+    if (!estado) {
+      nuevosErrores.estado = "Debes seleccionar un estado.";
+    }
+    if (puntuacion !== null && (puntuacion < 1 || puntuacion > 10)) {
+      nuevosErrores.puntuacion = "La puntuación debe estar entre 1 y 10.";
+    }
+
+    setErrores(nuevosErrores);
+    return Object.keys(nuevosErrores).length === 0;
+  }
+
   function handleAñadir() {
+    if (!validar()) return;
+
     añadir({
       mal_id: anime.mal_id,
       title: anime.title,
@@ -24,6 +42,9 @@ export function AnimeDetail({ anime, onCerrar }: AnimeDetailProps) {
       puntuacion,
       notas,
     });
+
+    setConfirmacion(true);
+    setTimeout(() => setConfirmacion(false), 3000);
   }
 
   return (
@@ -58,31 +79,44 @@ export function AnimeDetail({ anime, onCerrar }: AnimeDetailProps) {
 
         {!yaGuardado ? (
           <div className="border-t border-gray-700 pt-4 flex flex-col gap-3">
-            <select
-              value={estado}
-              onChange={e => setEstado(e.target.value as EstadoAnime)}
-              className="bg-gray-800 text-white px-3 py-2 rounded-lg border border-gray-600"
-            >
-              <option value="PENDIENTE">Pendiente</option>
-              <option value="VIENDO">Viendo</option>
-              <option value="COMPLETADO">Completado</option>
-            </select>
-            <select
-              value={puntuacion ?? ""}
-              onChange={e => setPuntuacion(e.target.value ? Number(e.target.value) : null)}
-              className="bg-gray-800 text-white px-3 py-2 rounded-lg border border-gray-600"
-            >
-              <option value="">Sin puntuación</option>
-              {[1,2,3,4,5,6,7,8,9,10].map(n => (
-                <option key={n} value={n}>{n}</option>
-              ))}
-            </select>
+            <div>
+              <select
+                value={estado}
+                onChange={e => setEstado(e.target.value as EstadoAnime)}
+                className="w-full bg-gray-800 text-white px-3 py-2 rounded-lg border border-gray-600"
+              >
+                <option value="PENDIENTE">Pendiente</option>
+                <option value="VIENDO">Viendo</option>
+                <option value="COMPLETADO">Completado</option>
+              </select>
+              {errores.estado && <p className="text-red-400 text-sm mt-1">{errores.estado}</p>}
+            </div>
+
+            <div>
+              <select
+                value={puntuacion ?? ""}
+                onChange={e => setPuntuacion(e.target.value ? Number(e.target.value) : null)}
+                className="w-full bg-gray-800 text-white px-3 py-2 rounded-lg border border-gray-600"
+              >
+                <option value="">Sin puntuación</option>
+                {[1,2,3,4,5,6,7,8,9,10].map(n => (
+                  <option key={n} value={n}>{n}</option>
+                ))}
+              </select>
+              {errores.puntuacion && <p className="text-red-400 text-sm mt-1">{errores.puntuacion}</p>}
+            </div>
+
             <textarea
               value={notas}
               onChange={e => setNotas(e.target.value)}
               placeholder="Añade notas personales..."
               className="bg-gray-800 text-white px-3 py-2 rounded-lg border border-gray-600 resize-none h-20"
             />
+
+            {confirmacion && (
+              <p className="text-green-400 text-center font-semibold">✓ Añadido correctamente a tu lista</p>
+            )}
+
             <button
               onClick={handleAñadir}
               className="bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg font-semibold"
