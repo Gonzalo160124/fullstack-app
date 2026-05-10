@@ -3,6 +3,9 @@
 Aplicación web para gestionar tu lista personal de anime y manga.
 Construida con React + TypeScript + Tailwind CSS.
 
+## URLs del proyecto
+- **Frontend**: https://fullstack-app-liard.vercel.app
+
 ## Tecnologías
 - React + TypeScript
 - Tailwind CSS
