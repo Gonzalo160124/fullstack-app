@@ -23,12 +23,12 @@ export function HomePage() {
   }, [resultados]);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
+    <div className="min-h-screen bg-gray-900 text-white p-4 overflow-x-hidden">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold text-center mb-2 text-purple-400">OtakuList</h1>
         <p className="text-gray-400 text-center mb-8">Gestiona tu lista de anime y manga</p>
 
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-8 px-2">
           <SearchBar onBuscar={buscar} cargando={estadoRed.estado === "CARGANDO" && hasBuscado} />
         </div>
 

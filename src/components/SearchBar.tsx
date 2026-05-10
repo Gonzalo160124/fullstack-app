@@ -15,7 +15,8 @@ export function SearchBar({ onBuscar, cargando }: SearchBarProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 w-full max-w-2xl">
+  <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-full max-w-2xl">
+    <div className="flex gap-2">
       <select
         value={tipo}
         onChange={e => setTipo(e.target.value as "anime" | "manga")}
@@ -29,15 +30,16 @@ export function SearchBar({ onBuscar, cargando }: SearchBarProps) {
         value={query}
         onChange={e => setQuery(e.target.value)}
         placeholder="Busca un anime o manga..."
-        className="flex-1 bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-600 focus:outline-none focus:border-purple-500"
+        className="flex-1 bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-600 focus:outline-none focus:border-purple-500 min-w-0"
       />
-      <button
-        type="submit"
-        disabled={cargando}
-        className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg disabled:opacity-50"
-      >
-        {cargando ? "Buscando..." : "Buscar"}
-      </button>
-    </form>
-  );
+    </div>
+    <button
+      type="submit"
+      disabled={cargando}
+      className="w-full bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg disabled:opacity-50"
+    >
+      {cargando ? "Buscando..." : "Buscar"}
+    </button>
+  </form>
+);
 }
