@@ -1,24 +1,21 @@
 import { useState, useCallback } from "react";
 import { buscarAnime, buscarManga } from "../api/animeApi";
-import type { AnimeAPI } from "../types/tipos";
+import type { AnimeAPI, EstadoRed } from "../types/tipos";
 
 export function useAnimeSearch() {
-  const [resultados, setResultados] = useState<AnimeAPI[]>([]);
-  const [cargando, setCargando] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [estadoRed, setEstadoRed] = useState<EstadoRed<AnimeAPI[]>>({ estado: "CARGANDO" });
+  const [hasBuscado, setHasBuscado] = useState(false);
 
   const buscar = useCallback(async (query: string, tipo: "anime" | "manga") => {
-    setCargando(true);
-    setError(null);
+    setHasBuscado(true);
+    setEstadoRed({ estado: "CARGANDO" });
     try {
       const datos = tipo === "anime" ? await buscarAnime(query) : await buscarManga(query);
-      setResultados(datos);
-    } catch {
-      setError("Error al buscar. Inténtalo de nuevo.");
-    } finally {
-      setCargando(false);
+      setEstadoRed({ estado: "EXITO", datos });
+    } catch (error) {
+      setEstadoRed({ estado: "ERROR", mensaje: error instanceof Error ? error.message : "Error desconocido" });
     }
   }, []);
 
-  return { resultados, cargando, error, buscar };
+  return { estadoRed, hasBuscado, buscar };
 }

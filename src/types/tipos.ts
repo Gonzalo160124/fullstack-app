@@ -19,3 +19,8 @@ export interface AnimeGuardado {
   puntuacion: number | null;
   notas: string;
 }
+
+export type EstadoRed<T> =
+  | { estado: "CARGANDO" }
+  | { estado: "EXITO"; datos: T }
+  | { estado: "ERROR"; mensaje: string };
